@@ -1,18 +1,43 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
+import React, { useEffect } from 'react';
+import { compose } from 'redux';
 
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLifecycleSelector } from '@kai23/reduxutils';
 
-export default function HomePage() {
+import actions from './core/actions';
+import reducer from './core/reducer';
+import saga from './core/saga';
+
+import './assets/styles.scss';
+
+const key = 'home';
+
+function HomePage() {
+  const dispatch = useDispatch();
+  const getTodos = useLifecycleSelector(key, 'getTodos');
+  const todos = useSelector((store) => store[key].todos);
+
+  useEffect(() => {
+    dispatch(actions.getTodos());
+  }, []);
+
   return (
-    <h1>
-      <FormattedMessage {...messages.header} />
-    </h1>
+    <div className="home">
+      <h1>
+        Example of todos GET
+
+        {getTodos.loading && (<p>Chargement des todos...</p>)}
+        {getTodos.success && (todos.map((todo) => (
+          <p>{todo.title}</p>
+        )))}
+      </h1>
+    </div>
   );
 }
+
+const withReducer = injectReducer({ key, reducer });
+const withSaga = injectSaga({ key, saga });
+
+export default compose(withReducer, withSaga)(HomePage);

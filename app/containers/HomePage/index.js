@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { compose } from 'redux';
 
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycleSelector } from '@kai23/reduxutils';
+import { injectReducer, injectSaga } from 'redux-injectors';
 
 import actions from './core/actions';
 import reducer from './core/reducer';

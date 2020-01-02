@@ -12,13 +12,9 @@ import { useSelector } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 
 export default function LanguageProvider(props) {
-  const { locale } = useSelector(state => state.language.locale)
+  const { locale } = useSelector((state) => state.language.locale);
   return (
-    <IntlProvider
-      locale={locale}
-      key={locale}
-      messages={props.messages[locale]}
-    >
+    <IntlProvider locale={locale} messages={props.messages[locale]}>
       {React.Children.only(props.children)}
     </IntlProvider>
   );

@@ -22,7 +22,7 @@ module.exports = {
       message:
         'What is the language you want to add i18n support for (e.g. "fr", "de")?',
       default: 'fr',
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value) && value.length === 2) {
           return languageIsSupported(value)
             ? `The language "${value}" is already supported.`
@@ -50,6 +50,12 @@ module.exports = {
         path: '../../app',
         file: 'app.js',
       });
+
+      actions.push({
+        type: 'backup',
+        path: '../../app',
+        file: 'locales.js',
+      });
     }
 
     actions.push({
@@ -60,7 +66,7 @@ module.exports = {
     });
     actions.push({
       type: 'modify',
-      path: '../../app/i18n.js',
+      path: '../../app/locales.js',
       pattern: /(\s+'[a-z]+',\n)(?!.*\s+'[a-z]+',)/g,
       templateFile: './language/app-locale.hbs',
     });

@@ -25,8 +25,8 @@ text:
 ```javascript
 // Button.js
 
-import React from 'react';
-import CheckmarkIcon from './CheckmarkIcon';
+import React from "react";
+import CheckmarkIcon from "./CheckmarkIcon";
 
 function Button(props) {
   return (
@@ -47,7 +47,7 @@ It might be used in another component like this:
 ```javascript
 // HomePage.js
 
-import Button from './Button';
+import Button from "./Button";
 
 function HomePage() {
   return <Button onClick={this.doSomething}>Click me!</Button>;
@@ -61,20 +61,28 @@ be the HTML output
 (_Comments added in parallel to compare structures in HTML from JSX source_):
 
 ```html
-<button>                           <!-- <Button>             -->
-  <i class="fa fa-checkmark"></i>  <!--   <CheckmarkIcon />  -->
-  Click Me!                        <!--   { props.children } -->
-</button>                          <!-- </Button>            -->
+<button>
+  <!-- <Button>             -->
+  <i class="fa fa-checkmark"></i>
+  <!--   <CheckmarkIcon />  -->
+  Click Me!
+  <!--   { props.children } -->
+</button>
+<!-- </Button>            -->
 ```
 
 Conversely, when rendered with the shallow renderer, we'll get a String
 containing this "HTML":
 
 ```html
-<button>              <!-- <Button>             -->
-  <CheckmarkIcon />   <!--   NOT RENDERED!      -->
-  Click Me!           <!--   { props.children } -->
-</button>             <!-- </Button>            -->
+<button>
+  <!-- <Button>             -->
+  <CheckmarkIcon />
+  <!--   NOT RENDERED!      -->
+  Click Me!
+  <!--   { props.children } -->
+</button>
+<!-- </Button>            -->
 ```
 
 If we test our `Button` with the normal renderer and there's a problem
@@ -98,14 +106,14 @@ children, if any, and second that it handles clicks.
 This is our test setup:
 
 ```javascript
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Button from '../Button';
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import Button from "../Button";
 
-describe('<Button />', () => {
-  it('renders and matches the snapshot', () => {});
+describe("<Button />", () => {
+  it("renders and matches the snapshot", () => {});
 
-  it('handles clicks', () => {});
+  it("handles clicks", () => {});
 });
 ```
 
@@ -122,8 +130,8 @@ For this, we first call `render`. This will render our `<Button />` component in
 the existing snapshot, taken in a previous run of this test and committed to the repository.
 
 ```javascript
-it('renders and matches the snapshot', () => {
-  const text = 'Click me!';
+it("renders and matches the snapshot", () => {
+  const text = "Click me!";
   const { container } = render(<Button>{text}</Button>);
 
   expect(container.firstChild).toMatchSnapshot();
@@ -150,10 +158,10 @@ keeps track of _if_, _how often_, and _with what arguments_ it has been called. 
 simulate a click and, lastly, check that our mock function was called:
 
 ```javascript
-it('handles clicks', () => {
-  const onClickMock = jest.fn();
-  const text = 'Click me!';
-  const { getByText } = render(<Button onClick={onClickMock}>{text}</Button>);
+it("handles clicks", () => {
+  const onClickSpy = jest.fn();
+  const text = "Click me!";
+  const { getByText } = render(<Button onClick={onClickSpy}>{text}</Button>);
 
   fireEvent.click(getByText(text));
   expect(onClickSpy).toHaveBeenCalledTimes(1);
@@ -163,22 +171,22 @@ it('handles clicks', () => {
 Our finished test file looks like this:
 
 ```javascript
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Button from '../Button';
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import Button from "../Button";
 
-describe('<Button />', () => {
-  it('renders and matches the snapshot', () => {
-    const text = 'Click me!';
+describe("<Button />", () => {
+  it("renders and matches the snapshot", () => {
+    const text = "Click me!";
     const { container } = render(<Button>{text}</Button>);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('handles clicks', () => {
-    const onClickMock = jest.fn();
-    const text = 'Click me!';
-    const { getByText } = render(<Button onClick={onClickMock}>{text}</Button>);
+  it("handles clicks", () => {
+    const onClickSpy = jest.fn();
+    const text = "Click me!";
+    const { getByText } = render(<Button onClick={onClickSpy}>{text}</Button>);
 
     fireEvent.click(getByText(text));
     expect(onClickSpy).toHaveBeenCalledTimes(1);

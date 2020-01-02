@@ -10,10 +10,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { hot } from 'react-hot-loader/root';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
-export default function App() {
+function App() {
   return (
     <div>
       <Switch>
@@ -23,3 +24,5 @@ export default function App() {
     </div>
   );
 }
+
+export default hot(App);

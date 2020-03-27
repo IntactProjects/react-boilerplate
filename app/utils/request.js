@@ -10,7 +10,7 @@ import isArray from 'lodash/isArray';
  * @return {object}          The parsed JSON from the request
  */
 function parseJSON(response) {
-  return response.text().then(text => {
+  return response.text().then((text) => {
     try {
       const jsonResponse = JSON.parse(text);
       return { response, jsonResponse };
@@ -45,28 +45,26 @@ function checkStatus(response, jsonResponse) {
  * @return {object}             The response data
  */
 export default function request(url, callOptions = null) {
-  const prefix =
-    process.env.NODE_ENV === 'development' && url.startsWith('/')
-      ? process.env.API_URL
-      : '';
+  const prefix = process.env.NODE_ENV === 'development' && url.startsWith('/')
+    ? process.env.API_URL
+    : '';
   let pUrl = prefix + url;
-  const options = Object.assign(
-    {
-      headers: {},
-      mode: 'cors',
-      // credentials: 'include',
-    },
-    callOptions,
-  );
+  const options = {
+    headers: {},
+    mode: 'cors',
+    // credentials: 'include',
+
+    ...callOptions,
+  };
   // method is GET
   if (
-    typeof options.method !== 'string' ||
-    options.method.toUpperCase() === 'GET'
+    typeof options.method !== 'string'
+    || options.method.toUpperCase() === 'GET'
   ) {
     // IE browsers: fix XHR cache
     if (
-      typeof navigator !== 'undefined' &&
-      /msie|trident|edge/i.test(navigator.userAgent)
+      typeof navigator !== 'undefined'
+      && /msie|trident|edge/i.test(navigator.userAgent)
     ) {
       if (!isPlainObject(options.params)) {
         options.params = {};
@@ -78,10 +76,9 @@ export default function request(url, callOptions = null) {
       if (Object.keys(options.params).length) {
         const query = Object.keys(options.params)
           .map(
-            key =>
-              `${encodeURIComponent(key)}=${encodeURIComponent(
-                options.params[key],
-              )}`,
+            (key) => `${encodeURIComponent(key)}=${encodeURIComponent(
+              options.params[key],
+            )}`,
           )
           .join('&');
 
@@ -96,12 +93,11 @@ export default function request(url, callOptions = null) {
     if (isPlainObject(options.body)) {
       if (options.type === 'formUrlEncoded') {
         let data = '';
-        Object.keys(options.body).forEach(key => {
+        Object.keys(options.body).forEach((key) => {
           data += `${key}=${options.body[key]}&`;
         });
         data = data.slice(0, -1);
-        options.headers['Content-Type'] =
-          'application/x-www-form-urlencoded; charset=utf-8';
+        options.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
         options.body = data;
       } else {
         options.body = JSON.stringify(options.body);
